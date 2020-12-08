@@ -18,7 +18,7 @@ mongoose.connect( db_link, { useNewUrlparser: true } )
   .catch(err => console.log(err));
 
 // Route
-app.get('/', (req, res) => res.send('Expres Active!'));
+app.get('/', (req, res) => res.send('Expres is Live!'));
 
 let apiRoutes = require("./api-routes")
 app.use('/api', apiRoutes)
