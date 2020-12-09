@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+var findOrCreate = require('mongoose-findorcreate');
+
 // Setup schema
 var userSchema = mongoose.Schema({
     name: {
@@ -16,6 +18,7 @@ var userSchema = mongoose.Schema({
         default: Date.now
     }
 });
+userSchema.plugin(findOrCreate);
 
 // Export Contact model
 var User = module.exports = mongoose.model('user', userSchema);
