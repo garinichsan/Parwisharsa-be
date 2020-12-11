@@ -1,10 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
+
 const passport = require('passport');
 var cookieSession = require('cookie-session');
 require('./passport-setup');
 
+const cors = require("cors");
+
 const app = express();
+
+var corsOptions = {
+  origin: 'https://localhost:3000/',
+}
+
+app.use(cors(corsOptions));
 
 let bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({
