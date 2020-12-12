@@ -19,7 +19,10 @@ passport.use(new GoogleStrategy({
     passReqToCallback   : true
   },
   function(request, accessToken, refreshToken, profile, done) {
-    User.findOrCreate({ googleId: profile.id, name: profile.displayName, email: profile.email }, function (err, user) {
+    User.findOrCreate({ email: profile.email }, function (err, user) {
+      user.name = profile.displayName,
+      user.picture = profile.picture;
+      user.save();
       return done(err, user);
     });
   }

@@ -9,6 +9,7 @@ router.get('/', function (req, res) {
 });
 
 var userController = require('./userController');
+
 // user routes
 router.route('/users')
     .get(userController.index)

@@ -22,14 +22,15 @@ exports.index = function (req, res) {
 exports.new = function (req, res) {
     var user = new User();
     user.name = req.body.name ? req.body.name : user.name;
-    user.gender = req.body.gender;
+    user.picture = req.body.picture;
     user.email = req.body.email;
     user.phone = req.body.phone;
 // save the user and check for errors
     user.save(function (err) {
         if (err)
             res.json(err);
-res.json({
+        res.json({
+            status: "success",
             message: 'New user created!',
             data: user
         });
@@ -42,6 +43,7 @@ exports.view = function (req, res) {
         if (err)
             res.send(err);
         res.json({
+            status: "success",
             message: 'User details loading..',
             data: user
         });
@@ -50,16 +52,17 @@ exports.view = function (req, res) {
 
 // Handle update user info
 exports.update = function (req, res) {
-User.findById(req.params.user_id, function (err, user) {
+    User.findById(req.params.user_id, function (err, user) {
         if (err)
             res.send(err);
         user.name = req.body.name ? req.body.name : user.name;
         user.email = req.body.email ? req.body.email : user.email;
-        user.gender = req.body.gender;
+        user.picture = req.body.picture;
         user.phone = req.body.phone;
-// save the user and check for errors
+
+        // save the user and check for errors
         user.save(function (err) {
-            if (err)
+            if (err) 
                 res.json(err);
             res.json({
                 message: 'user Info updated',
@@ -74,11 +77,12 @@ exports.delete = function (req, res) {
     User.remove({
         _id: req.params.user_id
     }, function (err, user) {
-        if (err)
+        if (err) 
             res.send(err);
-res.json({
+        res.json({
             status: "success",
-            message: 'User deleted'
+            message: 'User deleted',
+            data: user
         });
     });
 };

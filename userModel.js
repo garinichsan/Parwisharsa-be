@@ -5,13 +5,12 @@ var findOrCreate = require('mongoose-findorcreate');
 var userSchema = mongoose.Schema({
     name: {
         type: String,
-        required: true
     },
     email: {
         type: String,
         required: true
     },
-    gender: String,
+    picture: String,
     phone: String,
     create_date: {
         type: Date,
