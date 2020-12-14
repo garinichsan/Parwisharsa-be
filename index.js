@@ -10,7 +10,8 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000','https://garinichsan.github.io'],
+  credentials: true
 }
 
 app.use(cors(corsOptions));
@@ -41,7 +42,10 @@ const isLoggedIn = (req, res, next) => {
   if (req.user){
     next();
   } else {
-    res.sendStatus(401);
+    res.status(401).json({
+      authenticated: false,
+      mesaage: "user has not been authenticated"
+    });
   }
 }
 
@@ -50,8 +54,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Route
-app.get('/', (req, res) => res.send(`Expres is Live! \n You're not loggedin!`));
-app.get('/google/success', (req, res) => res.send(`Hello ${req.user.name}!`));
+app.get('/', (req, res) => res.send(`Expres is Live!`));
+app.get('/google/success', isLoggedIn, (req, res) => res.status(200).json({
+  authenticated: true,
+  message: "user authenticated successfully!",
+  user: req.user,
+  cookies: req.cookies
+}));
 app.get('/google/failure', (req, res) => res.send(`You failed to log in!`));
 app.get('/logout', (req, res) => {
   req.session = null;
