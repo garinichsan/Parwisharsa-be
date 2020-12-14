@@ -55,8 +55,8 @@ exports.update = function (req, res) {
         if (err)
             res.send(err);
         objek.name = req.body.name ? req.body.name : objek.name;
-        objek.harga = req.body.harga;
-        objek.desc = req.body.desc;
+        objek.harga = req.body.harga ? req.body.harga : objek.harga;
+        objek.desc = req.body.desc ? req.body.desc : objek.desc;
 
         // save the objek and check for errors
         objek.save(function (err) {
