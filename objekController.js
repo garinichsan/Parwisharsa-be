@@ -1,5 +1,6 @@
 // Import contact model
 Objek = require('./objekModel');
+Log = require('./logModel');
 
 // Handle index actions
 exports.index = function (req, res) {
@@ -10,6 +11,7 @@ exports.index = function (req, res) {
                 message: err,
             });
         }
+
         res.json({
             status: "success",
             message: "Objek retrieved successfully",
@@ -24,8 +26,8 @@ exports.new = function (req, res) {
     objek.name = req.body.name ? req.body.name : objek.name;
     objek.harga = req.body.harga;
     objek.desc = req.body.desc;
-    objek.user_id = req.body.user_id;
-// save the objek and check for errors
+    objek.owner = req.body.owner;
+    // save the objek and check for errors
     objek.save(function (err) {
         if (err)
             res.json(err);
@@ -35,6 +37,14 @@ exports.new = function (req, res) {
             data: objek
         });
     });
+
+    //SAVE lOG
+    var log = new Log();
+    log.action = "create";
+    log.target = objek.id;
+    log.status = "success";
+    log.data = objek;
+    log.save();
 };
 
 // Handle view objek info
@@ -58,7 +68,7 @@ exports.update = function (req, res) {
         objek.name = req.body.name ? req.body.name : objek.name;
         objek.harga = req.body.harga ? req.body.harga : objek.harga;
         objek.desc = req.body.desc ? req.body.desc : objek.desc;
-        objek.user_id = req.body.user_id ? req.body.user_id : objek.user_id;
+        objek.owner = req.body.owner ? req.body.owner : objek.owner;
 
         // save the objek and check for errors
         objek.save(function (err) {
@@ -69,11 +79,30 @@ exports.update = function (req, res) {
                 data: objek
             });
         });
+
+        //SAVE lOG
+        var log = new Log();
+        log.action = "update";
+        log.target = objek.id;
+        log.status = "success";
+        log.data = objek;
+        log.save();
     });
 };
 
 // Handle delete objek
 exports.delete = function (req, res) {
+    Objek.findById(req.params.objek_id, function (err, objek) {
+        if (err)
+            res.send(err);
+        //SAVE lOG
+        var log = new Log();
+        log.action = "delete";
+        log.target = objek.id;
+        log.status = "success";
+        log.data = objek;
+        log.save();
+    });
     Objek.remove({
         _id: req.params.objek_id
     }, function (err, objek) {

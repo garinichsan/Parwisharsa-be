@@ -13,7 +13,7 @@ var objekSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    user_id: String
+    owner: String
 });
 
 // Export Objek model
