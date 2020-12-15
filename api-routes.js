@@ -10,6 +10,7 @@ router.get('/', function (req, res) {
 
 var userController = require('./userController');
 var objekController = require('./objekController');
+var logController = require('./logController');
 
 // user routes
 router.route('/users')
@@ -30,6 +31,10 @@ router.route('/objek/:objek_id')
     .patch(objekController.update)
     .put(objekController.update)
     .delete(objekController.delete);
+
+// user routes
+router.route('/log')
+    .get(logController.index)
 
 // Export API routes
 module.exports = router;
