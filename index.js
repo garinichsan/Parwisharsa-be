@@ -36,7 +36,10 @@ mongoose.connect( db_link, { useNewUrlparser: true } )
 // cookies session
 app.use(cookieSession({
   name: 'session',
-  keys: ['key1', 'key2']
+  keys: ['key1', 'key2'],
+  secure: true,
+  httpOnly: false,
+  sameSite: 'none'
 }))
 
 // check function
