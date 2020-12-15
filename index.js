@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const config = require('./config');
+
 const passport = require('passport');
 var cookieSession = require('cookie-session');
 require('./passport-setup');
@@ -42,7 +44,7 @@ const isLoggedIn = (req, res, next) => {
   if (req.user){
     next();
   } else {
-    res.status(401).json({
+    res.status(200).json({
       authenticated: false,
       mesaage: "user has not been authenticated"
     });
@@ -55,7 +57,7 @@ app.use(passport.session());
 
 // Route
 app.get('/', (req, res) => res.send(`Expres is Live!`));
-app.get('/google/success', isLoggedIn, (req, res) => res.status(200).json({
+app.get('/session', isLoggedIn, (req, res) => res.status(200).json({
   authenticated: true,
   message: "user authenticated successfully!",
   user: req.user,
@@ -65,7 +67,7 @@ app.get('/google/failure', (req, res) => res.send(`You failed to log in!`));
 app.get('/logout', (req, res) => {
   req.session = null;
   req.logout();
-  res.redirect('/');
+  res.redirect(config.FRONTEND);
 });
 
 app.get('/google',
@@ -74,7 +76,7 @@ app.get('/google',
 
 // Google OAuth2
 app.get( '/google/callback', passport.authenticate( 'google', {
-        successRedirect: '/google/success',
+        successRedirect: config.FRONTEND,
         failureRedirect: '/google/failure'
 }));
 

@@ -24,6 +24,7 @@ exports.new = function (req, res) {
     objek.name = req.body.name ? req.body.name : objek.name;
     objek.harga = req.body.harga;
     objek.desc = req.body.desc;
+    objek.user_id = req.body.user_id;
 // save the objek and check for errors
     objek.save(function (err) {
         if (err)
@@ -38,7 +39,7 @@ exports.new = function (req, res) {
 
 // Handle view objek info
 exports.view = function (req, res) {
-    Objek.findById(req.params.objek_id, function (err, objek) {
+    Objek.findById(req.params._id, function (err, objek) {
         if (err)
             res.send(err);
         res.json({
@@ -57,6 +58,7 @@ exports.update = function (req, res) {
         objek.name = req.body.name ? req.body.name : objek.name;
         objek.harga = req.body.harga ? req.body.harga : objek.harga;
         objek.desc = req.body.desc ? req.body.desc : objek.desc;
+        objek.user_id = req.body.user_id ? req.body.user_id : objek.user_id;
 
         // save the objek and check for errors
         objek.save(function (err) {
